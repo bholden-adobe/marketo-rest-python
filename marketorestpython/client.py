@@ -256,6 +256,7 @@ class MarketoClient:
                     'clone_program': self.clone_program,
                     'approve_program': self.approve_program,
                     'unapprove_program': self.unapprove_program,
+                    'delete_tag_from_program': self.delete_tag_from_program,
                     'get_smart_list_by_program_id': self.get_smart_list_by_program_id,
                     'get_channels': self.get_channels,
                     'get_channel_by_name': self.get_channel_by_name,
@@ -4615,6 +4616,22 @@ class MarketoClient:
         }
         result = self._api_call(
             'post', self.host + "/rest/asset/v1/program/" + str(id) + "/unapprove.json", args)
+        if result is None:
+            raise Exception("Empty Response")
+        return result['result']
+
+    def delete_tag_from_program(self, id, tagType):
+        self.authenticate()
+        if id is None:
+            raise ValueError("Invalid argument: required argument id is none.")
+        if tagType is None:
+            raise ValueError(
+                "Invalid argument: required argument tagType is none.")
+        args = {
+            'access_token': self.token
+        }
+        result = self._api_call(
+            'post', self.host + "/rest/asset/v1/program/" + str(id) + "/tag/" + str(tagType) + "/delete.json", args)
         if result is None:
             raise Exception("Empty Response")
         return result['result']
